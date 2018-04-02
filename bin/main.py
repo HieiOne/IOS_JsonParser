@@ -19,6 +19,8 @@ def InfoTeams(Value):
         data = json.load(data_file)
 
     POS = list(range(len(data["matchData"]["teams"]))) #To define a list of x variables
+    SHOT_ACCURACY = ''
+    PASS_ACCURACY = ''
     
     table = PrettyTable(['NAME', 'POSSESSION', 'CORNERS', 'FREEKICKS', 'OFFSIDES', 'GOALS', 'SHOTS', 'SHOTS ON GOAL', 'SHOT ACCURACY', 'TACKLES', 'SUCCESFUL TACKLES', 'INTERCEPTIONS', 'PASSES', 'PASS ACCURACY', 'FOULS', 'YELLOW CARDS', 'RED CARDS'])
     for item in range(len(data["matchData"]["teams"])):
@@ -39,6 +41,11 @@ def InfoTeams(Value):
                 POS[0] = round(data["matchData"]["teams"][item]["matchPeriods"][1]["statistics"][22]/(data["matchData"]["teams"][item]["matchPeriods"][1]["statistics"][22]+data["matchData"]["teams"][item+1]["matchPeriods"][1]["statistics"][22])*100,1)
                 POS[1] = round(100 - POS[0],1)
         
+        if JsonData[7] >= 1 and JsonData[8] >= 1:
+                SHOT_ACCURACY = round(JsonData[8]/JsonData[7]*100,1) 
+        if JsonData[15] >= 1 and JsonData[15]>= 1:
+                PASS_ACCURACY = round(JsonData[9]/JsonData[15]*100,1)
+
         table.add_row([
                        data["matchData"]["teams"][item]["matchTotal"]["name"], #NAME
                     #GENERAL
@@ -50,14 +57,14 @@ def InfoTeams(Value):
                        JsonData[12], #GOALS
                        JsonData[7],  #SHOTS
                        JsonData[8],  #SHOTS ON GOAL
-                       round(JsonData[8]/JsonData[7]*100,1), #SHOT ACCURACY
+                       SHOT_ACCURACY, #SHOT ACCURACY
                     #DEFENSE
                        JsonData[4], #TACKLES
                        JsonData[5], #SUCCESFUL TACKLES
                        JsonData[1], #INTERCEPTIONS
                     #DISTRIBUTION
                        JsonData[15], #PASSES
-                       round(JsonData[9]/JsonData[15]*100,1), #PASS ACCURACY
+                       PASS_ACCURACY, #PASS ACCURACY
                     #DISCIPLINE
                        JsonData[2], #FOULS
                        JsonData[1], #YELLOW CARDS
@@ -102,7 +109,6 @@ def InfoPlayers():
             GOALS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][12]
             SHOTS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][7]
             SHOTS_ON_GOAL += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][8]
-            #SHOT_ACCURACY += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][7] #Will calculate later with other info
             TACKLES += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][4]
             SUCCESFUL_TACKLES += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][5]
             INTERCEPTIONS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][1]

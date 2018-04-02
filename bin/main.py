@@ -3,8 +3,7 @@ from tkinter import filedialog #For the window
 from prettytable import PrettyTable #Table
 import json
 
-json_file = 'D:/DOWNLOADS/2018.03.20_20h.42m.07s_nextgen-vs-phoenix_5-1.json' #Global variable which contains the file path to the JSON
-#Empty this later on
+json_file = '' #Global variable which contains the file path to the JSON
 
 def getJsonFile(): #Simple function to ask the user where the JSON file at
     window = tk.Tk()
@@ -16,7 +15,6 @@ def InsertIntoDB():
     print("Under Construction")
 
 def InfoTeams(Value):
-    #getJsonFile() #After test remove comment
     with open(json_file) as data_file:
         data = json.load(data_file)
 
@@ -68,7 +66,6 @@ def InfoTeams(Value):
     print(table)
 
 def InfoPlayers():
-    #getJsonFile() #After test remove comment
     with open(json_file) as data_file:
         data = json.load(data_file)
 
@@ -179,15 +176,17 @@ def main():
     while choice == '0': # Simple Menu
         print("")
         print("---------- MENU -----------")
-        print("1.- Insert JSON file into DB")
-        print("2.- Check JSON data")
+        print("1.- Insert JSON file into DB (It will ask for JSON file path)")
+        print("2.- Check JSON data (It will ask for JSON file path)")
         print("3.- Exit")
         print("")
         choice = input("So what is it gonna be? ")
 
         if choice == '1': #Inserts data into the DB
+            #getJsonFile()
             InsertIntoDB()
         elif choice == '2': #Shows parsed data
+            getJsonFile()
             parseMenu()
         elif choice == '3': #Exits
             print("Goodbye..")

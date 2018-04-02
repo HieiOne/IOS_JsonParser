@@ -26,18 +26,18 @@ def InfoTeams(Value):
         if Value == 0: #Total
             JsonData = data["matchData"]["teams"][item]["matchTotal"]["statistics"]
             if item == 0: #Calculate possession depending on requested info
-                POS[0] = round(data["matchData"]["teams"][item]["matchTotal"]["statistics"][22]/(data["matchData"]["teams"][item]["matchTotal"]["statistics"][22]+data["matchData"]["teams"][item+1]["matchTotal"]["statistics"][22])*100)
-                POS[1] = round(100 - POS[0])
+                POS[0] = round(data["matchData"]["teams"][item]["matchTotal"]["statistics"][22]/(data["matchData"]["teams"][item]["matchTotal"]["statistics"][22]+data["matchData"]["teams"][item+1]["matchTotal"]["statistics"][22])*100,1)
+                POS[1] = round(100 - POS[0],1)
         elif Value == 1: #1st Half
             JsonData = data["matchData"]["teams"][item]["matchPeriods"][0]["statistics"]
             if item == 0: #Calculate possession depending on requested info
-                POS[0] = round(data["matchData"]["teams"][item]["matchPeriods"][0]["statistics"][22]/(data["matchData"]["teams"][item]["matchPeriods"][0]["statistics"][22]+data["matchData"]["teams"][item+1]["matchPeriods"][0]["statistics"][22])*100)
-                POS[1] = round(100 - POS[0])
+                POS[0] = round(data["matchData"]["teams"][item]["matchPeriods"][0]["statistics"][22]/(data["matchData"]["teams"][item]["matchPeriods"][0]["statistics"][22]+data["matchData"]["teams"][item+1]["matchPeriods"][0]["statistics"][22])*100,1)
+                POS[1] = round(100 - POS[0],1)
         elif Value == 2: #2nd half
             JsonData = data["matchData"]["teams"][item]["matchPeriods"][1]["statistics"]
             if item == 0: #Calculate possession depending on requested info
-                POS[0] = round(data["matchData"]["teams"][item]["matchPeriods"][1]["statistics"][22]/(data["matchData"]["teams"][item]["matchPeriods"][1]["statistics"][22]+data["matchData"]["teams"][item+1]["matchPeriods"][1]["statistics"][22])*100)
-                POS[1] = round(100 - POS[0])
+                POS[0] = round(data["matchData"]["teams"][item]["matchPeriods"][1]["statistics"][22]/(data["matchData"]["teams"][item]["matchPeriods"][1]["statistics"][22]+data["matchData"]["teams"][item+1]["matchPeriods"][1]["statistics"][22])*100,1)
+                POS[1] = round(100 - POS[0],1)
         
         table.add_row([
                        data["matchData"]["teams"][item]["matchTotal"]["name"], #NAME
@@ -121,7 +121,7 @@ def InfoPlayers():
         table.add_row([
                        data["matchData"]["players"][item]["info"]["name"], #NAME
                     #GENERAL
-                       round(POSSESSION/POS_TOTAL*100),    #POSSESSION
+                       round(POSSESSION/POS_TOTAL*100,1),    #POSSESSION
                        CORNERS, #CORNERS
                        FREEKICKS, #FREEKICKS
                        OFFSIDES, #OFFSIDES

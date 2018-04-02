@@ -50,14 +50,14 @@ def InfoTeams(Value):
                        JsonData[12], #GOALS
                        JsonData[7],  #SHOTS
                        JsonData[8],  #SHOTS ON GOAL
-                       round(JsonData[8]/JsonData[7]*100,2), #SHOT ACCURACY
+                       round(JsonData[8]/JsonData[7]*100,1), #SHOT ACCURACY
                     #DEFENSE
                        JsonData[4], #TACKLES
                        JsonData[5], #SUCCESFUL TACKLES
                        JsonData[1], #INTERCEPTIONS
                     #DISTRIBUTION
                        JsonData[15], #PASSES
-                       round(JsonData[9]/JsonData[15]*100,2), #PASS ACCURACY
+                       round(JsonData[9]/JsonData[15]*100,1), #PASS ACCURACY
                     #DISCIPLINE
                        JsonData[2], #FOULS
                        JsonData[1], #YELLOW CARDS
@@ -113,9 +113,9 @@ def InfoPlayers():
             RED_CARDS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][0]
         
         if (SHOTS >= 1 and SHOTS_ON_GOAL >= 1):
-            SHOT_ACCURACY = round(SHOTS_ON_GOAL/SHOTS*100,2)   
+            SHOT_ACCURACY = round(SHOTS_ON_GOAL/SHOTS*100,1)   
         if PASSES >= 1 and COMPLETED_PASSES >= 1:
-            PASS_ACCURACY = round(COMPLETED_PASSES/PASSES*100,2)
+            PASS_ACCURACY = round(COMPLETED_PASSES/PASSES*100,1)
             
 
         table.add_row([

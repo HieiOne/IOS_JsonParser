@@ -22,7 +22,7 @@ def InfoTeams(Value):
     SHOT_ACCURACY = ''
     PASS_ACCURACY = ''
     
-    table = PrettyTable(['NAME', 'POSSESSION', 'CORNERS', 'FREEKICKS', 'OFFSIDES', 'GOALS', 'SHOTS', 'SHOTS ON GOAL', 'SHOT ACCURACY', 'TACKLES', 'SUCCESFUL TACKLES', 'INTERCEPTIONS', 'PASSES', 'PASS ACCURACY', 'FOULS', 'YELLOW CARDS', 'RED CARDS'])
+    table = PrettyTable(['NAME', 'POSSESSION', 'CORNERS', 'DISTANCE COVERED', 'OFFSIDES', 'GOALS', 'SHOTS', 'SHOTS ON GOAL', 'SHOT ACCURACY', 'INTERCEPTIONS', 'PASSES', 'PASS ACCURACY', 'FOULS', 'YELLOW CARDS', 'RED CARDS', 'SAVES'])
     for item in range(len(data["matchData"]["teams"])):
         #INFORMATION TO SHOW
         if Value == 0: #Total
@@ -51,7 +51,7 @@ def InfoTeams(Value):
                     #GENERAL
                        POS[item],    #POSSESSION
                        JsonData[18], #CORNERS
-                       JsonData[16], #FREEKICKS
+                       round(JsonData[23]/1000,1), #DISTANCE COVERED
                        JsonData[11], #OFFSIDES
                     #ATTACK
                        JsonData[12], #GOALS
@@ -59,8 +59,6 @@ def InfoTeams(Value):
                        JsonData[8],  #SHOTS ON GOAL
                        SHOT_ACCURACY, #SHOT ACCURACY
                     #DEFENSE
-                       JsonData[4], #TACKLES
-                       JsonData[5], #SUCCESFUL TACKLES
                        JsonData[1], #INTERCEPTIONS
                     #DISTRIBUTION
                        JsonData[15], #PASSES
@@ -68,7 +66,9 @@ def InfoTeams(Value):
                     #DISCIPLINE
                        JsonData[2], #FOULS
                        JsonData[1], #YELLOW CARDS
-                       JsonData[0]  #RED CARDS
+                       JsonData[0], #RED CARDS
+                    #GOALKEEPER
+                       JsonData[20] #SAVES
                     ])
     print(table)
 
@@ -82,7 +82,7 @@ def InfoPlayers():
             POS_TOTAL += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][22] #We plus the possession
 
     
-    table = PrettyTable(['NAME', 'POSSESSION', 'CORNERS', 'FREEKICKS', 'OFFSIDES', 'GOALS', 'SHOTS', 'SHOTS ON GOAL', 'SHOT ACCURACY', 'TACKLES', 'SUCCESFUL TACKLES', 'INTERCEPTIONS', 'PASSES', 'PASS ACCURACY', 'FOULS', 'YELLOW CARDS', 'RED CARDS'])
+    table = PrettyTable(['NAME', 'POSSESSION', 'CORNERS', 'DISTANCE COVERED', 'OFFSIDES', 'GOALS', 'SHOTS', 'SHOTS ON GOAL', 'SHOT ACCURACY', 'INTERCEPTIONS', 'PASSES', 'PASS ACCURACY', 'FOULS', 'YELLOW CARDS', 'RED CARDS', 'SAVES'])
     for item in range(len(data["matchData"]["players"])): #For every player
         POSSESSION = 0
         CORNERS = 0
@@ -91,14 +91,14 @@ def InfoPlayers():
         GOALS = 0
         SHOTS = 0
         SHOTS_ON_GOAL = 0
-        TACKLES = 0
-        SUCCESFUL_TACKLES = 0
+        DISTANCE_COVERED = 0
         INTERCEPTIONS = 0
         PASSES = 0
         COMPLETED_PASSES = 0
         FOULS = 0
         YELLOW_CARDS = 0
         RED_CARDS = 0
+        SAVES = 0
         SHOT_ACCURACY = ''
         PASS_ACCURACY = ''
         for period in range(len(data["matchData"]["players"][item]["matchPeriodData"])): #And every period it plays
@@ -109,14 +109,14 @@ def InfoPlayers():
             GOALS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][12]
             SHOTS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][7]
             SHOTS_ON_GOAL += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][8]
-            TACKLES += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][4]
-            SUCCESFUL_TACKLES += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][5]
+            DISTANCE_COVERED += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][23]
             INTERCEPTIONS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][1]
             PASSES += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][15]
             COMPLETED_PASSES += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][9]
             FOULS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][2]
             YELLOW_CARDS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][1]
             RED_CARDS += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][0]
+            SAVES += data["matchData"]["players"][item]["matchPeriodData"][period]['statistics'][20]
         
         if (SHOTS >= 1 and SHOTS_ON_GOAL >= 1):
             SHOT_ACCURACY = round(SHOTS_ON_GOAL/SHOTS*100,1)   
@@ -129,7 +129,7 @@ def InfoPlayers():
                     #GENERAL
                        round(POSSESSION/POS_TOTAL*100,1),    #POSSESSION
                        CORNERS, #CORNERS
-                       FREEKICKS, #FREEKICKS
+                       round(DISTANCE_COVERED/1000,1), #DISTANCE COVERED
                        OFFSIDES, #OFFSIDES
                     #ATTACK
                        GOALS, #GOALS
@@ -137,8 +137,6 @@ def InfoPlayers():
                        SHOTS_ON_GOAL,  #SHOTS ON GOAL
                        SHOT_ACCURACY,  #SHOT ACCURACY
                     #DEFENSE
-                       TACKLES, #TACKLES
-                       SUCCESFUL_TACKLES, #SUCCESFUL TACKLES
                        INTERCEPTIONS, #INTERCEPTIONS
                     #DISTRIBUTION
                        PASSES, #PASSES
@@ -146,7 +144,9 @@ def InfoPlayers():
                     #DISCIPLINE
                        FOULS, #FOULS
                        YELLOW_CARDS, #YELLOW CARDS
-                       RED_CARDS  #RED CARDS
+                       RED_CARDS,  #RED CARDS
+                    #GOALKEEPER
+                        SAVES   #SAVES
                     ])
     print(table)
 

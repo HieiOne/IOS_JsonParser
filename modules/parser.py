@@ -100,50 +100,51 @@ def playersFullTime(data):
             PosTotal += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][22]
     
     JsonData = data["matchData"]["players"][player]["matchPeriodData"][period]['statistics']
-    for player in range(len(data["matchData"]["players"])):
+    for player in range(len(data["matchData"]["players"])):        
         playerName = data["matchData"]["players"][player]["info"]["name"]
-
-        possession = 0
-        corners = 0
-        distanceCovered = 0
-        offsides = 0
-        goals = 0
-        shots = 0
-        shotsOnGoal = 0
-        shotAccuracy = 0 #DEFAULT VALUE
-        interceptions = 0
-        passes = 0
-        passesAccuracy = 0 # DEFAULT VALUE
-        passesCompleted = 0
-        fouls = 0
-        yellowCards = 0
-        redCards = 0
-        saves = 0
         
-        for period in range(len(data["matchData"]["players"][player]["matchPeriodData"])):
-            possession += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][POSSESSION]
-            corners += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][CORNERS]
-            distanceCovered += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][DISTANCE_COVERED]
-            offsides += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][OFFSIDES]
-            goals += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][GOALS]
-            shots += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][SHOTS]
-            shotsOnGoal += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][SHOTS_ON_GOAL]
-            interceptions += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][INTERCEPTIONS]
-            passes += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][PASSES]
-            passesCompleted += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][PASSES_COMPLETED]
-            fouls += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][FOULS]
-            yellowCards += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][YELLOW_CARDS]
-            redCards += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][RED_CARDS]
-            saves += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][KEEPER_SAVES]
+        if data["matchData"]["players"][player]["matchPeriodData"]:
+            possession = 0
+            corners = 0
+            distanceCovered = 0
+            offsides = 0
+            goals = 0
+            shots = 0
+            shotsOnGoal = 0
+            shotAccuracy = 0 #DEFAULT VALUE
+            interceptions = 0
+            passes = 0
+            passesAccuracy = 0 # DEFAULT VALUE
+            passesCompleted = 0
+            fouls = 0
+            yellowCards = 0
+            redCards = 0
+            saves = 0
+            
+            for period in range(len(data["matchData"]["players"][player]["matchPeriodData"])):
+                possession += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][POSSESSION]
+                corners += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][CORNERS]
+                distanceCovered += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][DISTANCE_COVERED]
+                offsides += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][OFFSIDES]
+                goals += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][GOALS]
+                shots += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][SHOTS]
+                shotsOnGoal += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][SHOTS_ON_GOAL]
+                interceptions += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][INTERCEPTIONS]
+                passes += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][PASSES]
+                passesCompleted += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][PASSES_COMPLETED]
+                fouls += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][FOULS]
+                yellowCards += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][YELLOW_CARDS]
+                redCards += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][RED_CARDS]
+                saves += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][KEEPER_SAVES]
 
-        possession = round(possession/PosTotal*100,1)
-        distanceCovered = round(distanceCovered/1000,1)
-        if shots >= 1:
-            shotAccuracy = round(shotsOnGoal/shots*100,1)
-        if passes >= 1:
-            passesAccuracy = round(passesCompleted/passes*100,1)
-        teamList = [playerName,possession,corners,distanceCovered,offsides,goals,shots,shotsOnGoal,shotAccuracy,interceptions,passes,passesAccuracy,fouls,yellowCards,redCards,saves]
-        PLAYERS.append(teamList)
+            possession = round(possession/PosTotal*100,1)
+            distanceCovered = round(distanceCovered/1000,1)
+            if shots >= 1:
+                shotAccuracy = round(shotsOnGoal/shots*100,1)
+            if passes >= 1:
+                passesAccuracy = round(passesCompleted/passes*100,1)
+            teamList = [playerName,possession,corners,distanceCovered,offsides,goals,shots,shotsOnGoal,shotAccuracy,interceptions,passes,passesAccuracy,fouls,yellowCards,redCards,saves]
+            PLAYERS.append(teamList)
 
 def printTable(dataList):
     table = PrettyTable(['NAME', 'POS', 'CORNERS', 'D_COVERED', 'OFFSIDES', 'GOALS', 'SHOTS', 'SHOTS ON GOAL', 'SHOT  %', 'INTERCEP', 'PASSES', 'PASS %', 'FOULS', 'YELLOW', 'RED', 'SAVES'])

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import tkinter as tk
 from tkinter import filedialog #For the window
 from prettytable import PrettyTable #Table

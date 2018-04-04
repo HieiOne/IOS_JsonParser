@@ -3,6 +3,11 @@ from tkinter import filedialog #For the window
 from prettytable import PrettyTable #Table
 import json
 from modules import parser
+import signal
+
+def IgnoreKeyboardInterrupt():
+    return signal.signal(signal.SIGINT,signal.SIG_IGN)
+
 
 def InsertIntoDB():
     print("Under Construction")
@@ -66,4 +71,5 @@ def main():
 
 
 if __name__ == '__main__':
+    IgnoreKeyboardInterrupt()
     main()

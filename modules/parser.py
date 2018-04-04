@@ -11,6 +11,7 @@ PLAYERS = [] #Full time players list
 #INFO STORED:
 # 0 -> name 1 -> possession | 2 -> corners | 3 -> distance covered | 4 -> offsides | 5 -> goals | 6 -> shots | 7 -> shots on goal
 # 8 -> shot accuracy | 9 -> interceptions | 10 -> passes | 11 -> passes accuracy | 12 -> fouls | 13 -> y cards | 14 -> red cards | 15 -> saves
+#name | possession | goals | shots | shots ot | corners | offsides | passes | pass % | interceptions | saves | fouls | yellow | red | distance
 
 #STATISTICS TYPES
 RED_CARDS = 0
@@ -67,7 +68,8 @@ def statsInsert(teamName, PosTotal, JsonData, dataList):
     if passes >= 1:
         passesAccuracy = round(JsonData[PASSES_COMPLETED]/passes*100,1)
 
-    teamList = [teamName,possession,corners,distanceCovered,offsides,goals,shots,shotsOnGoal,shotAccuracy,interceptions,passes,passesAccuracy,fouls,yellowCards,redCards,saves]
+    teamList = [teamName,possession,goals,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
+    #name | possession | goals | shots | shots ot | corners | offsides | passes | pass % | interceptions | saves | fouls | yellow | red | distance
     dataList.append(teamList)
 
 def fullTimeTeams(data):
@@ -99,7 +101,6 @@ def playersFullTime(data):
         for period in range(len(data["matchData"]["players"][player]["matchPeriodData"])): #And for every period
             PosTotal += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][22]
     
-    JsonData = data["matchData"]["players"][player]["matchPeriodData"][period]['statistics']
     for player in range(len(data["matchData"]["players"])):        
         playerName = data["matchData"]["players"][player]["info"]["name"]
         
@@ -143,15 +144,16 @@ def playersFullTime(data):
                 shotAccuracy = round(shotsOnGoal/shots*100,1)
             if passes >= 1:
                 passesAccuracy = round(passesCompleted/passes*100,1)
-            teamList = [playerName,possession,corners,distanceCovered,offsides,goals,shots,shotsOnGoal,shotAccuracy,interceptions,passes,passesAccuracy,fouls,yellowCards,redCards,saves]
+            
+            teamList = [playerName,possession,goals,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
             PLAYERS.append(teamList)
 
 def printTable(dataList):
-    table = PrettyTable(['NAME', 'POS', 'CORNERS', 'D_COVERED', 'OFFSIDES', 'GOALS', 'SHOTS', 'SHOTS ON GOAL', 'SHOT  %', 'INTERCEP', 'PASSES', 'PASS %', 'FOULS', 'YELLOW', 'RED', 'SAVES'])
+    table = PrettyTable(['NAME', 'POS', 'GOALS', 'SHOTS', 'SHOTS OT', 'CORNERS', 'OFFSIDES', 'PASSES', 'PASS %', 'INTERCEP', 'SAVES', 'FOULS', 'YELLOW', 'RED', 'DISTANCE'])
     for item in dataList:
         table.add_row([
-            item[0],item[1],item[2],item[3],item[4],item[5],item[6],item[7],
-            item[8],item[9],item[10],item[11],item[12],item[13],item[14],item[15]
+            item[0],str(item[1]) + " %",item[2],item[3],item[4],item[5],item[6],item[7],
+            str(item[8]) + " %",item[9],item[10],item[11],item[12],item[13],str(item[14]) + " km"
         ])
     print(table)
 

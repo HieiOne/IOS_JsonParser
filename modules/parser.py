@@ -4,9 +4,10 @@ from prettytable import PrettyTable #Table
 import json
 
 TEAMS_TOTAL = [] #Full time list
+PLAYERS_HOME = [] #Home players 
+PLAYERS_AWAY = [] #Away players
 TEAMS_1ST_HALF = [] #1st time list
 TEAMS_2ND_HALF = [] #2nd time list
-PLAYERS = [] #Full time players list
 
 #INFO STORED:
 #name | possession | goals | assist |shots | shots ot | corners | offsides | passes | pass % | interceptions | saves | fouls | yellow | red | distance
@@ -103,6 +104,7 @@ def playersFullTime(data):
         playerName = data["matchData"]["players"][player]["info"]["name"]
         
         if data["matchData"]["players"][player]["matchPeriodData"]:
+            team = data["matchData"]["players"][player]["matchPeriodData"][0]["info"]["team"]
             possession = 0
             corners = 0
             distanceCovered = 0
@@ -146,9 +148,13 @@ def playersFullTime(data):
                 passesAccuracy = round(passesCompleted/passes*100,1)
             
             teamList = [playerName,possession,goals,assist,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
-            PLAYERS.append(teamList)
+            if team == 'home':
+                PLAYERS_HOME.append(teamList)
+            else:
+                PLAYERS_AWAY.append(teamList)
+                
 
-def printTable(dataList):
+def printTable(dataList,dataList_2='Empty'):
     table = PrettyTable(['NAME', 'POS', 'GOALS','ASSISTS', 'SHOTS', 'SHOTS OT', 'CORNERS', 'OFFSIDES', 'PASSES', 'PASS %', 'INTERCEP', 'SAVES', 'FOULS', 'YELLOW', 'RED', 'DISTANCE'])
     for item in dataList:
         table.add_row([
@@ -156,6 +162,13 @@ def printTable(dataList):
             item[8],str(item[9]) + " %",item[10],item[11],item[12],item[14],item[13],str(item[15]) + " km"
         ])
     print(table)
+    if dataList_2 != 'Empty':
+        for item in dataList_2:
+            table.add_row([
+                item[0],str(item[1]) + " %",item[2],item[3],item[4],item[5],item[6],item[7],
+                item[8],str(item[9]) + " %",item[10],item[11],item[12],item[14],item[13],str(item[15]) + " km"
+            ])
+        print(table)
 
 def parseJson(JsonFile): #Parsing the JSON
     with open(JsonFile) as data_file:
@@ -163,4 +176,4 @@ def parseJson(JsonFile): #Parsing the JSON
     fullTimeTeams(data) #Parse full time
     halfTimeTeams(data) #Parse half times
     playersFullTime(data) #Parse players
-    return TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS
+    return TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY

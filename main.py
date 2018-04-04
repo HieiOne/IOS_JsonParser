@@ -9,7 +9,7 @@ def InsertIntoDB():
 
 def subMenu():
     JsonFile = parser.getJsonFile()
-    TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS = parser.parseJson(JsonFile)
+    TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY = parser.parseJson(JsonFile)
     choice = '0'
     while choice == '0': # Simple Menu
         print("")
@@ -17,8 +17,10 @@ def subMenu():
         print("1.- Show total info of teams")
         print("2.- Show first half of teams")
         print("3.- Show second half of teams")
-        print("4.- Show total info of every player in the game")
-        print("5.- Exit Submenu")
+        print("4.- Show HOME team players stats")
+        print("5.- Show AWAY team players stats")
+        print("6.- Show total info of every player in the game")
+        print("7.- Exit Submenu")
         print("")
         choice = input("So what is it gonna be? ")
 
@@ -28,9 +30,13 @@ def subMenu():
             parser.printTable(TEAMS_1ST_HALF)
         elif choice == '3': #Show second half of teams
             parser.printTable(TEAMS_2ND_HALF)
-        elif choice == '4': #Show total info of every player in the game
-            parser.printTable(PLAYERS)
-        elif choice == '5': #Exits submenu
+        elif choice == '4': #Show HOME team players stats
+            parser.printTable(PLAYERS_HOME)
+        elif choice == '5': #Show AWAY team players stats
+            parser.printTable(PLAYERS_AWAY)
+        elif choice == '6': #Show total info of every player in the game
+            parser.printTable(PLAYERS_HOME,PLAYERS_AWAY)
+        elif choice == '7': #Exits submenu
             break
         else:
             print("Sorry I didn't get what you wanted to do?")

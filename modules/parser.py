@@ -9,8 +9,6 @@ TEAMS_2ND_HALF = [] #2nd time list
 PLAYERS = [] #Full time players list
 
 #INFO STORED:
-# 0 -> name 1 -> possession | 2 -> corners | 3 -> distance covered | 4 -> offsides | 5 -> goals | 6 -> shots | 7 -> shots on goal
-# 8 -> shot accuracy | 9 -> interceptions | 10 -> passes | 11 -> passes accuracy | 12 -> fouls | 13 -> y cards | 14 -> red cards | 15 -> saves
 #name | possession | goals | shots | shots ot | corners | offsides | passes | pass % | interceptions | saves | fouls | yellow | red | distance
 
 #STATISTICS TYPES

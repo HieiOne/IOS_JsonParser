@@ -46,10 +46,8 @@ def subMenu():
             else:
                 print("Sorry I didn't get what you wanted to do?")
             choice = '0' #Only way of exiting this loop is manually
-            pass
         except EOFError:
             pass
-            print("")
 
 
 def main():
@@ -76,6 +74,7 @@ def main():
             choice = '0' #Only way of exiting this loop is manually
         except EOFError:
             pass
+            print("")
 
 
 

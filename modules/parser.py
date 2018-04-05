@@ -10,7 +10,7 @@ TEAMS_1ST_HALF = [] #1st time list
 TEAMS_2ND_HALF = [] #2nd time list
 
 #INFO STORED:
-#name | possession | goals | assist |shots | shots ot | corners | offsides | passes | pass % | interceptions | saves | fouls | yellow | red | distance
+#name | possession | goals | assist |shots | shots ot | corners | offsides | passes | pass % | passes completion | interceptions | saves | fouls | yellow | red | distance
 
 #STATISTICS TYPES
 RED_CARDS = 0
@@ -40,6 +40,13 @@ DISTANCE_COVERED = 23
 KEEPER_SAVES_CAUGHT = 24
 
 def getJsonFile(): #Simple function to ask the user where the JSON file at
+    #For every time we ask for a JSON we empty the lists
+    del TEAMS_TOTAL[:]
+    del PLAYERS_HOME[:]
+    del PLAYERS_AWAY[:]
+    del TEAMS_1ST_HALF[:]
+    del TEAMS_2ND_HALF[:]
+
     window = tk.Tk()
     window.withdraw()
     file_path = filedialog.askopenfilename(filetypes = (("JSON files", "*.json"),("All files", "*.*") )) #Window and the extensions for an easier search
@@ -57,6 +64,7 @@ def statsInsert(teamName, PosTotal, JsonData, dataList):
     interceptions = JsonData[INTERCEPTIONS]
     passes = JsonData[PASSES]
     passesAccuracy = 0 #DEFAULT VALUE
+    passesCompleted = JsonData[PASSES_COMPLETED]
     fouls = JsonData[FOULS]
     yellowCards = JsonData[YELLOW_CARDS]
     redCards = JsonData[RED_CARDS]
@@ -68,7 +76,7 @@ def statsInsert(teamName, PosTotal, JsonData, dataList):
     if passes >= 1:
         passesAccuracy = round(JsonData[PASSES_COMPLETED]/passes*100,1)
 
-    teamList = [teamName,possession,goals,assist,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
+    teamList = [teamName,possession,goals,assist,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,passesCompleted,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
     dataList.append(teamList)
 
 def fullTimeTeams(data):
@@ -147,7 +155,7 @@ def playersFullTime(data):
             if passes >= 1:
                 passesAccuracy = round(passesCompleted/passes*100,1)
             
-            teamList = [playerName,possession,goals,assist,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
+            teamList = [playerName,possession,goals,assist,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,passesCompleted,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
             if team == 'home':
                 PLAYERS_HOME.append(teamList)
             else:
@@ -159,14 +167,14 @@ def printTable(dataList,dataList_2='Empty'):
     for item in dataList:
         table.add_row([
             item[0],str(item[1]) + " %",item[2],item[3],item[4],item[5],item[6],item[7],
-            item[8],str(item[9]) + " %",item[10],item[11],item[12],item[14],item[13],str(item[15]) + " km"
+            item[8],str(item[9]) + " %",item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km"
         ])
     print(table)
     if dataList_2 != 'Empty':
         for item in dataList_2:
             table.add_row([
                 item[0],str(item[1]) + " %",item[2],item[3],item[4],item[5],item[6],item[7],
-                item[8],str(item[9]) + " %",item[10],item[11],item[12],item[14],item[13],str(item[15]) + " km"
+                item[8],str(item[9]) + " %",item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km"
             ])
         print(table)
 

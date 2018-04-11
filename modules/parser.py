@@ -169,14 +169,13 @@ def printTable(dataList,dataList_2='Empty'):
             item[0],str(item[1]) + " %",item[2],item[3],item[4],item[5],item[6],item[7],
             item[8],str(item[9]) + " %",item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km"
         ])
-    print(table)
     if dataList_2 != 'Empty':
         for item in dataList_2:
             table.add_row([
                 item[0],str(item[1]) + " %",item[2],item[3],item[4],item[5],item[6],item[7],
                 item[8],str(item[9]) + " %",item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km"
             ])
-        print(table)
+    print(table)
 
 def parseJson(JsonFile): #Parsing the JSON
     with open(JsonFile) as data_file:

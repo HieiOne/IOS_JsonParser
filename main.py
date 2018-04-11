@@ -3,7 +3,7 @@
 """JsonParser - Parses IOS Json file to a more understandable format and easier display of them"""
 
 __author__ = "Hiei"
-__copyright__ = "Bo copyright, just share the author"
+__copyright__ = "No copyright, just share the author"
 __version__ = "1.0.0"
 __maintainer__ = "Hiei"
 

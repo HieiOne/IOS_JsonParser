@@ -224,7 +224,7 @@ def printEvents(dataList):
         player1 = checkPlayer(item[3])
         player2 = checkPlayer(item[4])
         table.add_row([
-            round(item[0]/60),item[1],team,player1,player2
+            item[1],round(item[0]/60),team,player1,player2
         ])
     print(table)
 

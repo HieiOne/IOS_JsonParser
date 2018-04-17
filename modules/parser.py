@@ -8,6 +8,7 @@ PLAYERS_HOME = [] #Home players
 PLAYERS_AWAY = [] #Away players
 TEAMS_1ST_HALF = [] #1st time list
 TEAMS_2ND_HALF = [] #2nd time list
+EVENTS = [] #Events list
 
 #INFO STORED:
 #name | possession | goals | assist |shots | shots ot | corners | offsides | passes | pass % | passes completion | interceptions | saves | fouls | yellow | red | distance
@@ -46,11 +47,16 @@ def getJsonFile(): #Simple function to ask the user where the JSON file at
     del PLAYERS_AWAY[:]
     del TEAMS_1ST_HALF[:]
     del TEAMS_2ND_HALF[:]
+    del EVENTS[:]
 
     window = tk.Tk()
     window.withdraw()
     file_path = filedialog.askopenfilename(filetypes = (("JSON files", "*.json"),("All files", "*.*") )) #Window and the extensions for an easier search
     return file_path #We return the file path
+
+def parseEvents(data):
+    print("Under construction")
+
 
 def statsInsert(teamName, PosTotal, JsonData, dataList):
     possession = round(JsonData[POSSESSION]/PosTotal*100,1)
@@ -183,4 +189,5 @@ def parseJson(JsonFile): #Parsing the JSON
     fullTimeTeams(data) #Parse full time
     halfTimeTeams(data) #Parse half times
     playersFullTime(data) #Parse players
-    return TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY
+    parseJson(data) #Parse events
+    return TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY, EVENTS

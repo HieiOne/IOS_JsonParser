@@ -9,10 +9,10 @@ __maintainer__ = "Hiei"
 
 import tkinter as tk
 from tkinter import filedialog #For the window
-from prettytable import PrettyTable #Table
 import json
-from modules import parser
 import signal
+from modules import prettytable # Table
+from modules import parser
 
 def IgnoreKeyboardInterrupt():
     return signal.signal(signal.SIGINT,signal.SIG_IGN)

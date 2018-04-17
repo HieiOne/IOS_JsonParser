@@ -9,6 +9,9 @@ PLAYERS_AWAY = [] #Away players
 TEAMS_1ST_HALF = [] #1st time list
 TEAMS_2ND_HALF = [] #2nd time list
 EVENTS = [] #Events list
+HOME_TEAM = '' #Contains name of home team
+AWAY_TEAM = '' #Contains name of away team
+PLAYERS_WITH_ID = [] #Contains every player with its name and ID
 
 #INFO STORED:
 #name | possession | goals | assist |shots | shots ot | corners | offsides | passes | pass % | passes completion | interceptions | saves | fouls | yellow | red | distance
@@ -48,15 +51,38 @@ def getJsonFile(): #Simple function to ask the user where the JSON file at
     del TEAMS_1ST_HALF[:]
     del TEAMS_2ND_HALF[:]
     del EVENTS[:]
+    del PLAYERS_WITH_ID[:]
 
     window = tk.Tk()
     window.withdraw()
     file_path = filedialog.askopenfilename(filetypes = (("JSON files", "*.json"),("All files", "*.*") )) #Window and the extensions for an easier search
+    
+    with open(file_path) as data_file: #To extract Home team and Away team for Events print
+        data = json.load(data_file)
+    global HOME_TEAM
+    HOME_TEAM = data["matchData"]["teams"][0]["matchTotal"]["name"]
+    global AWAY_TEAM
+    AWAY_TEAM = data["matchData"]["teams"][1]["matchTotal"]["name"]
+    
     return file_path #We return the file path
 
-def parseEvents(data):
-    print("Under construction")
+def checkPlayer(STEAMID):
+    for player in PLAYERS_WITH_ID:
+        if player[0] == STEAMID:
+            return player[1] #We return the name
+            
 
+def parseEvents(data):
+    for event in range(len(data["matchData"]["matchEvents"])):
+        second = data["matchData"]["matchEvents"][event]["second"]
+        eventType = data["matchData"]["matchEvents"][event]["event"]
+        team = data["matchData"]["matchEvents"][event]["team"]
+        player_1 = data["matchData"]["matchEvents"][event]["player1SteamId"]
+        player_2 = data["matchData"]["matchEvents"][event]["player2SteamId"]
+        
+        if (eventType != "(null)"):
+            eventList = [second,eventType,team,player_1,player_2]
+            EVENTS.append(eventList)
 
 def statsInsert(teamName, PosTotal, JsonData, dataList):
     possession = round(JsonData[POSSESSION]/PosTotal*100,1)
@@ -114,7 +140,8 @@ def playersFullTime(data):
         for period in range(len(data["matchData"]["players"][player]["matchPeriodData"])): #And for every period
             PosTotal += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][22]
     
-    for player in range(len(data["matchData"]["players"])):        
+    for player in range(len(data["matchData"]["players"])):
+        playerId = data["matchData"]["players"][player]["info"]["steamId"]       
         playerName = data["matchData"]["players"][player]["info"]["name"]
         
         if data["matchData"]["players"][player]["matchPeriodData"]:
@@ -166,6 +193,9 @@ def playersFullTime(data):
                 PLAYERS_HOME.append(teamList)
             else:
                 PLAYERS_AWAY.append(teamList)
+            
+            playerList = [playerId,playerName]
+            PLAYERS_WITH_ID.append(playerList) #We append to the players info list
                 
 
 def printTable(dataList,dataList_2='Empty'):
@@ -183,11 +213,26 @@ def printTable(dataList,dataList_2='Empty'):
             ])
     print(table)
 
+def printEvents(dataList):
+    table = PrettyTable(['EVENT', 'MINUTE', 'TEAM', 'Player 1', 'Player 2'])
+    for item in dataList:
+        if item[2] == "home":
+            team = HOME_TEAM
+        else:
+            team = AWAY_TEAM
+
+        player1 = checkPlayer(item[3])
+        player2 = checkPlayer(item[4])
+        table.add_row([
+            round(item[0]/60),item[1],team,player1,player2
+        ])
+    print(table)
+
 def parseJson(JsonFile): #Parsing the JSON
     with open(JsonFile) as data_file:
         data = json.load(data_file)
     fullTimeTeams(data) #Parse full time
     halfTimeTeams(data) #Parse half times
     playersFullTime(data) #Parse players
-    parseJson(data) #Parse events
+    parseEvents(data) #Parse events
     return TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY, EVENTS

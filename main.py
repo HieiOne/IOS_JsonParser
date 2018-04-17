@@ -23,7 +23,7 @@ def InsertIntoDB():
 
 def subMenu():
     JsonFile = parser.getJsonFile()
-    TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY = parser.parseJson(JsonFile)
+    TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY, EVENTS = parser.parseJson(JsonFile)
     choice = '0'
     while choice == '0': # Simple Menu
         try:
@@ -34,7 +34,8 @@ def subMenu():
             print("4.- Show HOME team players stats")
             print("5.- Show AWAY team players stats")
             print("6.- Show total info of every player in the game")
-            print("7.- Exit Submenu")
+            print("7.- Show events")
+            print("8.- Exit Submenu")
             print("")
             choice = input("So what is it gonna be? ")
 
@@ -50,7 +51,9 @@ def subMenu():
                 parser.printTable(PLAYERS_AWAY)
             elif choice == '6': #Show total info of every player in the game
                 parser.printTable(PLAYERS_HOME,PLAYERS_AWAY)
-            elif choice == '7': #Exits submenu
+            elif choice == '7': #Show events
+                parser.printEvents(EVENTS)
+            elif choice == '8': #Exits submenu
                 break
             else:
                 print("Sorry I didn't get what you wanted to do?")

@@ -4,7 +4,7 @@
 
 __author__ = "Hiei"
 __copyright__ = "No copyright, just share the author"
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __maintainer__ = "Hiei"
 
 import tkinter as tk

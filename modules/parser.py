@@ -56,14 +56,6 @@ def getJsonFile(): #Simple function to ask the user where the JSON file at
     window = tk.Tk()
     window.withdraw()
     file_path = filedialog.askopenfilename(filetypes = (("JSON files", "*.json"),("All files", "*.*") )) #Window and the extensions for an easier search
-    
-    with open(file_path) as data_file: #To extract Home team and Away team for Events print
-        data = json.load(data_file)
-    global HOME_TEAM
-    HOME_TEAM = data["matchData"]["teams"][0]["matchTotal"]["name"]
-    global AWAY_TEAM
-    AWAY_TEAM = data["matchData"]["teams"][1]["matchTotal"]["name"]
-    
     return file_path #We return the file path
 
 def checkPlayer(STEAMID):
@@ -235,4 +227,6 @@ def parseJson(JsonFile): #Parsing the JSON
     halfTimeTeams(data) #Parse half times
     playersFullTime(data) #Parse players
     parseEvents(data) #Parse events
+    global HOME_TEAM ; HOME_TEAM = data["matchData"]["teams"][0]["matchTotal"]["name"]
+    global AWAY_TEAM ; AWAY_TEAM = data["matchData"]["teams"][1]["matchTotal"]["name"]
     return TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY, EVENTS

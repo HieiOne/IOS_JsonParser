@@ -4,7 +4,7 @@
 
 __author__ = "Hiei"
 __copyright__ = "No copyright, just share the author"
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 __maintainer__ = "Hiei"
 
 import tkinter as tk
@@ -25,14 +25,16 @@ def InsertIntoDB():
     print("Under Construction")
 
 def ExportToCSV(id,JsonFile,*argv):
-    #DEFAULT_PATH = "C:\\Users\\Hiei\Desktop\\"
-    desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-    print(desktop)
+    FOLDER = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents\\IOS_CSV_PARSEDFILES')
+    
+    if not os.path.exists(FOLDER):
+        os.mkdir(FOLDER)
+
     FILE_NAME = ["TotalTeams","FirstHalfTeams","SecondHalfTeams","HomePlayers","AwayPlayers","TotalPlayers"]
     FULL_NAME = os.path.basename(JsonFile)
     (NAME,ext) = os.path.splitext(FULL_NAME)
 
-    CSV_FILE = desktop+"\\"+NAME+"-"+FILE_NAME[id]+".csv"
+    CSV_FILE = FOLDER+"\\"+NAME+"-"+FILE_NAME[id]+".csv"
     
     STATS_DISPLAY = [["Player", "Poss (%)", "Goals","Assists", "Shots", "Shots OT", "Corners", "Offsides", "Passes", "Pass (%)", "IC", "Saves", "Fouls", "YC", "RC", "Dist (km)","OG"]] #EFA FORMAT
     with open(CSV_FILE, 'w') as filename:

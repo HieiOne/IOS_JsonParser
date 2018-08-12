@@ -102,7 +102,7 @@ def statsInsert(teamName, PosTotal, JsonData, dataList):
     if passes >= 1:
         passesAccuracy = round(JsonData[PASSES_COMPLETED]/passes*100,1)
 
-    teamList = [teamName,position,str(possession)+"%",goals,assist,shots,shotsOnGoal,corners,offsides,passes,str(passesAccuracy)+"%",interceptions,saves,fouls,yellowCards,redCards,distanceCovered,owngoals]
+    teamList = [teamName,str(possession)+"%",goals,assist,shots,shotsOnGoal,corners,offsides,passes,str(passesAccuracy)+"%",interceptions,saves,fouls,yellowCards,redCards,distanceCovered,owngoals,position]
     dataList.append(teamList)
 
 def fullTimeTeams(data): #INCLUDES OG
@@ -186,7 +186,7 @@ def playersFullTime(data):
             if passes >= 1:
                 passesAccuracy = round(passesCompleted/passes*100,1)
             
-            teamList = [playerName,position,str(possession)+"%",goals,assist,shots,shotsOnGoal,corners,offsides,passes,str(passesAccuracy)+"%",interceptions,saves,fouls,yellowCards,redCards,distanceCovered,owngoals]
+            teamList = [playerName,str(possession)+"%",goals,assist,shots,shotsOnGoal,corners,offsides,passes,str(passesAccuracy)+"%",interceptions,saves,fouls,yellowCards,redCards,distanceCovered,owngoals,position]
             if team == 'home':
                 PLAYERS_HOME.append(teamList)
             else:
@@ -197,17 +197,17 @@ def playersFullTime(data):
                 
 
 def printTable(dataList,dataList_2='Empty'):
-    table = PrettyTable(['NAME', 'POSITION', 'POS', 'GOALS','ASSISTS', 'SHOTS', 'SHOTS OT', 'CORNERS', 'OFFSIDES', 'PASSES', 'PASS %', 'INTERCEP', 'SAVES', 'FOULS', 'YELLOW', 'RED', 'DISTANCE','OG'])
+    table = PrettyTable(['NAME','POS', 'GOALS','ASSISTS', 'SHOTS', 'SHOTS OT', 'CORNERS', 'OFFSIDES', 'PASSES', 'PASS %', 'INTERCEP', 'SAVES', 'FOULS', 'YELLOW', 'RED', 'DISTANCE','OG','POSITION'])
     for item in dataList:
         table.add_row([
             item[0],item[1],item[2],item[3],item[4],item[5],item[6],item[7],
-            item[8],item[9],item[10],item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km",item[17]
+            item[8],item[9],item[10],item[11],item[12],item[13],item[14],str(item[15]) + " km",item[16],item[17]
         ])
     if dataList_2 != 'Empty':
         for item in dataList_2:
             table.add_row([
                 item[0],item[1],item[2],item[3],item[4],item[5],item[6],item[7],
-                item[8],item[9],item[10],item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km",item[17]
+                item[8],item[9],item[10],item[11],item[12],item[13],item[14],str(item[15]) + " km",item[16],item[17]
             ])
     print(table)
 

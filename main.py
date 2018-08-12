@@ -32,7 +32,7 @@ def ExportToCSV(id,JsonFile,*argv):
 
     CSV_FILE = DEFAULT_PATH+NAME+"-"+FILE_NAME[id]+".csv"
     
-    STATS_DISPLAY = [["Player", "Position", "Poss (%)", "Goals","Assists", "Shots", "Shots OT", "Corners", "Offsides", "Passes", "Pass (%)", "IC", "Saves", "Fouls", "YC", "RC", "Dist (km)","OG"]] #EFA FORMAT
+    STATS_DISPLAY = [["Player", "Poss (%)", "Goals","Assists", "Shots", "Shots OT", "Corners", "Offsides", "Passes", "Pass (%)", "IC", "Saves", "Fouls", "YC", "RC", "Dist (km)","OG"]] #EFA FORMAT
     with open(CSV_FILE, 'w') as filename:
         writer = csv.writer(filename, lineterminator='\n')
 

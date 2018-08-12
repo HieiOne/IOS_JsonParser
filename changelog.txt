@@ -4,3 +4,5 @@ Version: 1.2
 · Export to .CSV (The CSV files will be saved where the JSON are stored)
 · Added % to the CSV
 · Looking forward to add Positions (only initial) aswell
+
+· Fixed small path problem

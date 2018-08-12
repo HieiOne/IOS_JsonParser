@@ -78,6 +78,7 @@ def parseEvents(data):
 
 def statsInsert(teamName, PosTotal, JsonData, dataList):
     possession = round(JsonData[POSSESSION]/PosTotal*100,1)
+    position = "X"
     corners = JsonData[CORNERS]
     distanceCovered = round(JsonData[DISTANCE_COVERED]/1000,1)
     offsides = JsonData[OFFSIDES]
@@ -94,16 +95,17 @@ def statsInsert(teamName, PosTotal, JsonData, dataList):
     redCards = JsonData[RED_CARDS]
     saves = JsonData[KEEPER_SAVES]
     assist = JsonData[ASSISTS]
+    owngoals = JsonData[OWNGOALS]
 
     if shots >= 1:
         shotAccuracy = round(shotsOnGoal/shots*100,1)
     if passes >= 1:
         passesAccuracy = round(JsonData[PASSES_COMPLETED]/passes*100,1)
 
-    teamList = [teamName,possession,goals,assist,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,passesCompleted,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
+    teamList = [teamName,position,str(possession)+"%",goals,assist,shots,shotsOnGoal,corners,offsides,passes,str(passesAccuracy)+"%",interceptions,saves,fouls,yellowCards,redCards,distanceCovered,owngoals]
     dataList.append(teamList)
 
-def fullTimeTeams(data):
+def fullTimeTeams(data): #INCLUDES OG
     PosTotal = 0
     
     for item in range(len(data["matchData"]["teams"])):
@@ -114,7 +116,7 @@ def fullTimeTeams(data):
         teamName = data["matchData"]["teams"][item]["matchTotal"]["name"]
         statsInsert(teamName,PosTotal,JsonData,TEAMS_TOTAL)
 
-def halfTimeTeams(data):
+def halfTimeTeams(data): #INCLUDES OG
     HALFS_LIST = [TEAMS_1ST_HALF, TEAMS_2ND_HALF]
     for half in range(len(data["matchData"]["teams"][0]["matchPeriods"])):
         PosTotal = 0
@@ -138,6 +140,8 @@ def playersFullTime(data):
         
         if data["matchData"]["players"][player]["matchPeriodData"]:
             team = data["matchData"]["players"][player]["matchPeriodData"][0]["info"]["team"]
+            #position = "X"
+            position = data["matchData"]["players"][player]["matchPeriodData"][0]["info"]["position"]
             possession = 0
             corners = 0
             distanceCovered = 0
@@ -155,6 +159,7 @@ def playersFullTime(data):
             yellowCards = 0
             redCards = 0
             saves = 0
+            owngoals = 0
             
             for period in range(len(data["matchData"]["players"][player]["matchPeriodData"])):
                 possession += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][POSSESSION]
@@ -172,6 +177,7 @@ def playersFullTime(data):
                 yellowCards += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][YELLOW_CARDS]
                 redCards += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][RED_CARDS]
                 saves += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][KEEPER_SAVES]
+                owngoals += data["matchData"]["players"][player]["matchPeriodData"][period]['statistics'][OWNGOALS]
 
             possession = round(possession/PosTotal*100,1)
             distanceCovered = round(distanceCovered/1000,1)
@@ -180,7 +186,7 @@ def playersFullTime(data):
             if passes >= 1:
                 passesAccuracy = round(passesCompleted/passes*100,1)
             
-            teamList = [playerName,possession,goals,assist,shots,shotsOnGoal,corners,offsides,passes,passesAccuracy,passesCompleted,interceptions,saves,fouls,yellowCards,redCards,distanceCovered]
+            teamList = [playerName,position,str(possession)+"%",goals,assist,shots,shotsOnGoal,corners,offsides,passes,str(passesAccuracy)+"%",interceptions,saves,fouls,yellowCards,redCards,distanceCovered,owngoals]
             if team == 'home':
                 PLAYERS_HOME.append(teamList)
             else:
@@ -191,17 +197,17 @@ def playersFullTime(data):
                 
 
 def printTable(dataList,dataList_2='Empty'):
-    table = PrettyTable(['NAME', 'POS', 'GOALS','ASSISTS', 'SHOTS', 'SHOTS OT', 'CORNERS', 'OFFSIDES', 'PASSES', 'PASS %', 'INTERCEP', 'SAVES', 'FOULS', 'YELLOW', 'RED', 'DISTANCE'])
+    table = PrettyTable(['NAME', 'POSITION', 'POS', 'GOALS','ASSISTS', 'SHOTS', 'SHOTS OT', 'CORNERS', 'OFFSIDES', 'PASSES', 'PASS %', 'INTERCEP', 'SAVES', 'FOULS', 'YELLOW', 'RED', 'DISTANCE','OG'])
     for item in dataList:
         table.add_row([
-            item[0],str(item[1]) + " %",item[2],item[3],item[4],item[5],item[6],item[7],
-            item[8],str(item[9]) + " %",item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km"
+            item[0],item[1],item[2],item[3],item[4],item[5],item[6],item[7],
+            item[8],item[9],item[10],item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km",item[17]
         ])
     if dataList_2 != 'Empty':
         for item in dataList_2:
             table.add_row([
-                item[0],str(item[1]) + " %",item[2],item[3],item[4],item[5],item[6],item[7],
-                item[8],str(item[9]) + " %",item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km"
+                item[0],item[1],item[2],item[3],item[4],item[5],item[6],item[7],
+                item[8],item[9],item[10],item[11],item[12],item[13],item[14],item[15],str(item[16]) + " km",item[17]
             ])
     print(table)
 
@@ -227,6 +233,6 @@ def parseJson(JsonFile): #Parsing the JSON
     halfTimeTeams(data) #Parse half times
     playersFullTime(data) #Parse players
     parseEvents(data) #Parse events
-    global HOME_TEAM ; HOME_TEAM = data["matchData"]["teams"][0]["matchTotal"]["name"]
-    global AWAY_TEAM ; AWAY_TEAM = data["matchData"]["teams"][1]["matchTotal"]["name"]
+    global HOME_TEAM ; HOME_TEAM = data["matchData"]["teams"][0]["matchTotal"]["name"] #Getting HOME TEAM name
+    global AWAY_TEAM ; AWAY_TEAM = data["matchData"]["teams"][1]["matchTotal"]["name"] #Getting AWAY TEAM name
     return TEAMS_TOTAL, TEAMS_1ST_HALF, TEAMS_2ND_HALF, PLAYERS_HOME, PLAYERS_AWAY, EVENTS

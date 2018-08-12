@@ -1,0 +1,6 @@
+Version: 1.2
+
+· Include OG in Stats
+· Export to .CSV (The CSV files will be saved where the JSON are stored)
+· Added % to the CSV
+· Looking forward to add Positions (only initial) aswell
